@@ -24,6 +24,7 @@ import { BackendFeature } from '../../types';
 export type ServiceRef<
   TService,
   TScope extends 'root' | 'plugin' = 'root' | 'plugin',
+  TSingleton extends boolean = boolean,
 > = {
   id: string;
 
@@ -37,6 +38,8 @@ export type ServiceRef<
    * services but may depend on all other services.
    */
   scope: TScope;
+
+  singleton: TSingleton;
 
   /**
    * Utility for getting the type of the service, using `typeof serviceRef.T`.
@@ -78,9 +81,14 @@ export interface InternalServiceFactory<
 export type ServiceFactoryOrFunction = ServiceFactory | (() => ServiceFactory);
 
 /** @public */
-export interface ServiceRefOptions<TService, TScope extends 'root' | 'plugin'> {
+export interface ServiceRefOptions<
+  TService,
+  TScope extends 'root' | 'plugin',
+  TSingleton extends boolean,
+> {
   id: string;
   scope?: TScope;
+  singleton?: TSingleton;
   defaultFactory?: (
     service: ServiceRef<TService, TScope>,
   ) => Promise<ServiceFactoryOrFunction>;
@@ -92,8 +100,8 @@ export interface ServiceRefOptions<TService, TScope extends 'root' | 'plugin'> {
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'plugin'>,
-): ServiceRef<TService, 'plugin'>;
+  options: ServiceRefOptions<TService, 'plugin', true>,
+): ServiceRef<TService, 'plugin', true>;
 
 /**
  * Creates a new service definition. This overload is used to create root scoped services.
@@ -101,16 +109,34 @@ export function createServiceRef<TService>(
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'root'>,
-): ServiceRef<TService, 'root'>;
+  options: ServiceRefOptions<TService, 'root', true>,
+): ServiceRef<TService, 'root', true>;
 
+/**
+ * Creates a new service definition. This overload is used to create plugin scoped services.
+ *
+ * @public
+ */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, any>,
-): ServiceRef<TService, any> {
-  const { id, scope = 'plugin', defaultFactory } = options;
+  options: ServiceRefOptions<TService, 'plugin', false>,
+): ServiceRef<TService, 'plugin', false>;
+
+/**
+ * Creates a new service definition. This overload is used to create root scoped services.
+ *
+ * @public
+ */
+export function createServiceRef<TService>(
+  options: ServiceRefOptions<TService, 'root', false>,
+): ServiceRef<TService, 'root', false>;
+export function createServiceRef<TService, TSingleton extends boolean>(
+  options: ServiceRefOptions<TService, any, TSingleton>,
+): ServiceRef<TService, any, TSingleton> {
+  const { id, scope = 'plugin', singleton = true, defaultFactory } = options;
   return {
     id,
     scope,
+    singleton,
     get T(): TService {
       throw new Error(`tried to read ServiceRef.T of ${this}`);
     },
@@ -119,7 +145,7 @@ export function createServiceRef<TService>(
     },
     $$type: '@backstage/ServiceRef',
     __defaultFactory: defaultFactory,
-  } as ServiceRef<TService, typeof scope> & {
+  } as ServiceRef<TService, typeof scope, TSingleton> & {
     __defaultFactory?: (
       service: ServiceRef<TService>,
     ) => Promise<ServiceFactory<TService> | (() => ServiceFactory<TService>)>;
@@ -131,7 +157,11 @@ type ServiceRefsToInstances<
   T extends { [key in string]: ServiceRef<unknown> },
   TScope extends 'root' | 'plugin' = 'root' | 'plugin',
 > = {
-  [key in keyof T as T[key]['scope'] extends TScope ? key : never]: T[key]['T'];
+  [key in keyof T as T[key]['scope'] extends TScope
+    ? key
+    : never]: T[key]['singleton'] extends true
+    ? T[key]['T']
+    : Array<T[key]['T']>;
 };
 
 /** @public */
@@ -278,7 +308,8 @@ export function createServiceFactory<
         service: c.service,
         initialization: c.initialization,
         deps: c.deps,
-        factory: async (deps: TDeps) => c.factory(deps),
+        factory: async (deps: ServiceRefsToInstances<TDeps, 'root'>) =>
+          c.factory(deps),
       };
     }
     const c = anyConf as PluginServiceFactoryOptions<
@@ -294,12 +325,14 @@ export function createServiceFactory<
       initialization: c.initialization,
       ...('createRootContext' in c
         ? {
-            createRootContext: async (deps: TDeps) =>
-              c?.createRootContext?.(deps),
+            createRootContext: async (
+              deps: ServiceRefsToInstances<TDeps, 'root'>,
+            ) => c?.createRootContext?.(deps),
           }
         : {}),
       deps: c.deps,
-      factory: async (deps: TDeps, ctx: TContext) => c.factory(deps, ctx),
+      factory: async (deps: ServiceRefsToInstances<TDeps>, ctx: TContext) =>
+        c.factory(deps, ctx),
     };
   };
 
