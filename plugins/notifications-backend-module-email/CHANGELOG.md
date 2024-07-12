@@ -1,5 +1,16 @@
 # @backstage/plugin-notifications-backend-module-email
 
+## 0.1.3-next.2
+
+### Patch Changes
+
+- 4e4ef2b: Move notification processor filter parsing to common package
+- Updated dependencies
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/plugin-notifications-common@0.0.5-next.0
+  - @backstage/plugin-notifications-node@0.2.3-next.2
+  - @backstage/backend-common@0.23.3-next.2
+
 ## 0.1.3-next.1
 
 ### Patch Changes

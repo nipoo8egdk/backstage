@@ -1,5 +1,16 @@
 # @backstage/plugin-catalog-backend-module-msgraph
 
+## 0.5.30-next.2
+
+### Patch Changes
+
+- f7bdcea: Adds a dynamic provider for the plugin-catalog-backend-module-msgraph. Configuration is now runtime configurable through the ProviderConfigTransformer.
+- Updated dependencies
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/backend-common@0.23.3-next.2
+  - @backstage/backend-tasks@0.5.27-next.2
+  - @backstage/plugin-catalog-node@1.12.4-next.2
+
 ## 0.5.30-next.1
 
 ### Patch Changes

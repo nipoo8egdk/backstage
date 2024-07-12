@@ -1,5 +1,18 @@
 # @backstage/backend-plugin-api
 
+## 0.6.22-next.2
+
+### Patch Changes
+
+- fe47a3e: All service config types were renamed to option types in order to standardize frontend and backend `create*` function signatures:
+
+  - The `ServiceRefConfig` type was renamed to`ServiceRefOptions`;
+  - The `RootServiceFactoryConfig` type was renamed to `RootServiceFactoryOptions`;
+  - The `PluginServiceFactoryConfig` type was renamed to `PluginServiceFactoryOptions`
+
+- Updated dependencies
+  - @backstage/plugin-auth-node@0.4.17-next.2
+
 ## 0.6.22-next.1
 
 ### Patch Changes

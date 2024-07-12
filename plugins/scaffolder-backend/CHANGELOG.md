@@ -1,5 +1,28 @@
 # @backstage/plugin-scaffolder-backend
 
+## 1.23.0-next.3
+
+### Patch Changes
+
+- b9451dd: Updated `catalog:write` scaffolder action to show correct file path location in log message
+- Updated dependencies
+  - @backstage/plugin-scaffolder-backend-module-github@0.4.0-next.2
+  - @backstage/plugin-auth-node@0.4.17-next.2
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/backend-common@0.23.3-next.2
+  - @backstage/backend-tasks@0.5.27-next.2
+  - @backstage/plugin-catalog-backend-module-scaffolder-entity-model@0.1.20-next.2
+  - @backstage/plugin-catalog-node@1.12.4-next.2
+  - @backstage/plugin-permission-node@0.7.33-next.2
+  - @backstage/plugin-scaffolder-backend-module-bitbucket@0.2.12-next.2
+  - @backstage/plugin-scaffolder-backend-module-bitbucket-cloud@0.1.12-next.2
+  - @backstage/plugin-scaffolder-backend-module-bitbucket-server@0.1.12-next.2
+  - @backstage/plugin-scaffolder-backend-module-gerrit@0.1.14-next.2
+  - @backstage/plugin-scaffolder-backend-module-gitea@0.1.12-next.2
+  - @backstage/plugin-scaffolder-backend-module-gitlab@0.4.4-next.2
+  - @backstage/plugin-scaffolder-node@0.4.8-next.2
+  - @backstage/plugin-scaffolder-backend-module-azure@0.1.14-next.2
+
 ## 1.23.0-next.2
 
 ### Patch Changes

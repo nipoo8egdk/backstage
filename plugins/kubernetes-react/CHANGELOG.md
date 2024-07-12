@@ -1,5 +1,11 @@
 # @backstage/plugin-kubernetes-react
 
+## 0.4.1-next.2
+
+### Patch Changes
+
+- 2414d86: Fix the `HTML` markup of the `FixDialog` component, `ul` and `li` are not allowed inside a `p` tag.
+
 ## 0.4.1-next.1
 
 ### Patch Changes

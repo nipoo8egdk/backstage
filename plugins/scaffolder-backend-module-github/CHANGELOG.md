@@ -1,5 +1,18 @@
 # @backstage/plugin-scaffolder-backend-module-github
 
+## 0.4.0-next.2
+
+### Patch Changes
+
+- ccfc9d1: Fixed bug resulting from missing required owner and repo arguments in `getEnvironmentPublicKey` in action `github:environment:create`.
+
+  Adding environment secrets now works as expected.
+
+- Updated dependencies
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/backend-common@0.23.3-next.2
+  - @backstage/plugin-scaffolder-node@0.4.8-next.2
+
 ## 0.4.0-next.1
 
 ### Patch Changes

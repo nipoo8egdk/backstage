@@ -1,5 +1,23 @@
 # @backstage/backend-defaults
 
+## 0.4.0-next.2
+
+### Minor Changes
+
+- 1cb84d7: **BREAKING**: Removed the depreacted `getPath` option from `httpRouterServiceFactory`, as well as the `HttpRouterFactoryOptions` type.
+
+### Patch Changes
+
+- 2f99178: The `ServiceFactoryTest.get` method was deprecated and the `ServiceFactoryTest.getSubject` should be used instead. The `getSubject` method has the same behavior, but has a better method name to indicate that the service instance returned is the subject currently being tested.
+- Updated dependencies
+  - @backstage/backend-app-api@0.8.0-next.2
+  - @backstage/plugin-auth-node@0.4.17-next.2
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/backend-common@0.23.3-next.2
+  - @backstage/config-loader@1.8.1
+  - @backstage/plugin-events-node@0.3.8-next.2
+  - @backstage/plugin-permission-node@0.7.33-next.2
+
 ## 0.3.4-next.1
 
 ### Patch Changes

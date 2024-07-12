@@ -1,5 +1,18 @@
 # @backstage/backend-test-utils
 
+## 0.4.4-next.2
+
+### Patch Changes
+
+- 2f99178: The `ServiceFactoryTest.get` method was deprecated and the `ServiceFactoryTest.getSubject` should be used instead. The `getSubject` method has the same behavior, but has a better method name to indicate that the service instance returned is the subject currently being tested.
+- edf5cc3: The function `isDockerDisabledForTests` is deprecated and will no longer be exported in the near future as it should only be used internally.
+- Updated dependencies
+  - @backstage/backend-defaults@0.4.0-next.2
+  - @backstage/backend-app-api@0.8.0-next.2
+  - @backstage/plugin-auth-node@0.4.17-next.2
+  - @backstage/backend-plugin-api@0.6.22-next.2
+  - @backstage/plugin-events-node@0.3.8-next.2
+
 ## 0.4.4-next.1
 
 ### Patch Changes

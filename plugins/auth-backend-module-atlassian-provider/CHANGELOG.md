@@ -1,5 +1,14 @@
 # @backstage/plugin-auth-backend-module-atlassian-provider
 
+## 0.2.3-next.2
+
+### Patch Changes
+
+- b9832ae: Fix several issues with the Atlassian auth provider (type definition, profile url, profile transformation, scopes)
+- Updated dependencies
+  - @backstage/plugin-auth-node@0.4.17-next.2
+  - @backstage/backend-plugin-api@0.6.22-next.2
+
 ## 0.2.3-next.1
 
 ### Patch Changes
