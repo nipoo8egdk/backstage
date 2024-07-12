@@ -143,7 +143,7 @@ export type RootHttpRouterFactoryOptions = {
 // @public (undocumented)
 export const rootHttpRouterServiceFactory: (
   options?: RootHttpRouterFactoryOptions | undefined,
-) => ServiceFactory<RootHttpRouterService, 'root', boolean>;
+) => ServiceFactory<RootHttpRouterService, 'root', 'multiple' | 'single'>;
 
 // (No @packageDocumentation comment for this package)
 ```

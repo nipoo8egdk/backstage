@@ -10,7 +10,7 @@ import { ServiceFactory } from '@backstage/backend-plugin-api';
 export const lifecycleServiceFactory: () => ServiceFactory<
   LifecycleService,
   'plugin',
-  true
+  'single'
 >;
 
 // (No @packageDocumentation comment for this package)

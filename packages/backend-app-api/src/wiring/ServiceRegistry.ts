@@ -240,10 +240,10 @@ export class ServiceRegistry {
     }
   }
 
-  get<T, TSingleton extends boolean>(
+  get<T, TSingleton extends 'single' | 'multiple'>(
     ref: ServiceRef<T, 'plugin' | 'root', TSingleton>,
     pluginId: string,
-  ): Promise<TSingleton extends true ? T : T[]> | undefined {
+  ): Promise<TSingleton extends 'single' ? T : T[]> | undefined {
     this.#instantiatedFactories.add(ref.id);
 
     const resolvedFactory = this.#resolveFactory(ref, pluginId);
@@ -252,7 +252,7 @@ export class ServiceRegistry {
       return ref.singleton
         ? undefined
         : (Promise.resolve([]) as
-            | Promise<TSingleton extends true ? T : T[]>
+            | Promise<TSingleton extends 'single' ? T : T[]>
             | undefined);
     }
 

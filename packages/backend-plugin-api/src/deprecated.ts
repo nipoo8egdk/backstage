@@ -28,7 +28,7 @@ import {
 export type ServiceRefConfig<
   TService,
   TScope extends 'root' | 'plugin',
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
 > = ServiceRefOptions<TService, TScope, TSingleton>;
 
 /**
@@ -37,7 +37,7 @@ export type ServiceRefConfig<
  */
 export type RootServiceFactoryConfig<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
 > = RootServiceFactoryOptions<TService, TSingleton, TImpl, TDeps>;
@@ -48,7 +48,7 @@ export type RootServiceFactoryConfig<
  */
 export type PluginServiceFactoryConfig<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TContext,
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },

@@ -24,7 +24,7 @@ import { BackendFeature } from '../../types';
 export type ServiceRef<
   TService,
   TScope extends 'root' | 'plugin' = 'root' | 'plugin',
-  TSingleton extends boolean = boolean,
+  TSingleton extends 'single' | 'multiple' = 'single' | 'multiple',
 > = {
   id: string;
 
@@ -39,7 +39,7 @@ export type ServiceRef<
    */
   scope: TScope;
 
-  singleton: TSingleton;
+  singleton: TSingleton extends 'single' ? true : false;
 
   /**
    * Utility for getting the type of the service, using `typeof serviceRef.T`.
@@ -54,7 +54,7 @@ export type ServiceRef<
 export interface ServiceFactory<
   TService = unknown,
   TScope extends 'plugin' | 'root' = 'plugin' | 'root',
-  TSingleton extends boolean = boolean,
+  TSingleton extends 'single' | 'multiple' = 'single' | 'multiple',
 > extends BackendFeature {
   service: ServiceRef<TService, TScope, TSingleton>;
 }
@@ -63,7 +63,7 @@ export interface ServiceFactory<
 export interface InternalServiceFactory<
   TService = unknown,
   TScope extends 'plugin' | 'root' = 'plugin' | 'root',
-  TSingleton extends boolean = boolean,
+  TSingleton extends 'single' | 'multiple' = 'single' | 'multiple',
 > extends ServiceFactory<TService, TScope, TSingleton> {
   version: 'v1';
   initialization?: 'always' | 'lazy';
@@ -86,11 +86,11 @@ export type ServiceFactoryOrFunction = ServiceFactory | (() => ServiceFactory);
 export interface ServiceRefOptions<
   TService,
   TScope extends 'root' | 'plugin',
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
 > {
   id: string;
   scope?: TScope;
-  singleton?: TSingleton;
+  singleton?: TSingleton extends 'single' ? true : false;
   defaultFactory?: (
     service: ServiceRef<TService, TScope>,
   ) => Promise<ServiceFactoryOrFunction>;
@@ -102,8 +102,8 @@ export interface ServiceRefOptions<
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'plugin', true>,
-): ServiceRef<TService, 'plugin', true>;
+  options: ServiceRefOptions<TService, 'plugin', 'single'>,
+): ServiceRef<TService, 'plugin', 'single'>;
 
 /**
  * Creates a new service definition. This overload is used to create root scoped services.
@@ -111,8 +111,8 @@ export function createServiceRef<TService>(
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'root', true>,
-): ServiceRef<TService, 'root', true>;
+  options: ServiceRefOptions<TService, 'root', 'single'>,
+): ServiceRef<TService, 'root', 'single'>;
 
 /**
  * Creates a new service definition. This overload is used to create plugin scoped services.
@@ -120,8 +120,8 @@ export function createServiceRef<TService>(
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'plugin', false>,
-): ServiceRef<TService, 'plugin', false>;
+  options: ServiceRefOptions<TService, 'plugin', 'multiple'>,
+): ServiceRef<TService, 'plugin', 'multiple'>;
 
 /**
  * Creates a new service definition. This overload is used to create root scoped services.
@@ -129,9 +129,12 @@ export function createServiceRef<TService>(
  * @public
  */
 export function createServiceRef<TService>(
-  options: ServiceRefOptions<TService, 'root', false>,
-): ServiceRef<TService, 'root', false>;
-export function createServiceRef<TService, TSingleton extends boolean>(
+  options: ServiceRefOptions<TService, 'root', 'multiple'>,
+): ServiceRef<TService, 'root', 'multiple'>;
+export function createServiceRef<
+  TService,
+  TSingleton extends 'single' | 'multiple',
+>(
   options: ServiceRefOptions<TService, any, TSingleton>,
 ): ServiceRef<TService, any, TSingleton> {
   const { id, scope = 'plugin', singleton = true, defaultFactory } = options;
@@ -169,7 +172,7 @@ type ServiceRefsToInstances<
 /** @public */
 export interface RootServiceFactoryOptions<
   TService, // TODO(Rugvip): Can we forward the entire service ref type here instead of forwarding each type arg once the callback form is gone?
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
 > {
@@ -192,7 +195,7 @@ export interface RootServiceFactoryOptions<
 /** @public */
 export interface PluginServiceFactoryOptions<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TContext,
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
@@ -227,7 +230,7 @@ export interface PluginServiceFactoryOptions<
  */
 export function createServiceFactory<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown, 'root'> },
   TOpts extends object | undefined = undefined,
@@ -242,7 +245,7 @@ export function createServiceFactory<
  */
 export function createServiceFactory<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown, 'root'> },
   TOpts extends object | undefined = undefined,
@@ -259,7 +262,7 @@ export function createServiceFactory<
  */
 export function createServiceFactory<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
   TContext = undefined,
@@ -281,7 +284,7 @@ export function createServiceFactory<
  */
 export function createServiceFactory<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
   TContext = undefined,
@@ -299,7 +302,7 @@ export function createServiceFactory<
 ): (options?: TOpts) => ServiceFactory<TService, 'plugin'>;
 export function createServiceFactory<
   TService,
-  TSingleton extends boolean,
+  TSingleton extends 'single' | 'multiple',
   TImpl extends TService,
   TDeps extends { [name in string]: ServiceRef<unknown> },
   TContext,

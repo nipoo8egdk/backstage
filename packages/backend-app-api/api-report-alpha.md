@@ -10,7 +10,7 @@ import { ServiceFactory } from '@backstage/backend-plugin-api';
 export const featureDiscoveryServiceFactory: () => ServiceFactory<
   FeatureDiscoveryService,
   'root',
-  boolean
+  'multiple' | 'single'
 >;
 
 // (No @packageDocumentation comment for this package)

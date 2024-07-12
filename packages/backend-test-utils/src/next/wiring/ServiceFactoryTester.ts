@@ -46,7 +46,7 @@ export interface ServiceFactoryTesterOptions {
 export class ServiceFactoryTester<
   TService,
   TScope extends 'root' | 'plugin',
-  TSingleton extends boolean = true,
+  TSingleton extends 'single' | 'multiple' = 'single',
 > {
   readonly #subject: ServiceRef<TService, TScope, TSingleton>;
   readonly #registry: ServiceRegistry;
@@ -61,7 +61,7 @@ export class ServiceFactoryTester<
   static from<
     TService,
     TScope extends 'root' | 'plugin',
-    TSingleton extends boolean = true,
+    TSingleton extends 'single' | 'multiple' = 'single',
   >(
     subject:
       | ServiceFactory<TService, TScope, TSingleton>
@@ -94,7 +94,7 @@ export class ServiceFactoryTester<
    */
   async get(
     ...args: 'root' extends TScope ? [] : [pluginId?: string]
-  ): Promise<TSingleton extends true ? TService : TService[]> {
+  ): Promise<TSingleton extends 'single' ? TService : TService[]> {
     return this.getSubject(...args);
   }
 
@@ -110,7 +110,7 @@ export class ServiceFactoryTester<
    */
   async getSubject(
     ...args: 'root' extends TScope ? [] : [pluginId?: string]
-  ): Promise<TSingleton extends true ? TService : TService[]> {
+  ): Promise<TSingleton extends 'single' ? TService : TService[]> {
     const [pluginId] = args;
     const instance = this.#registry.get(this.#subject, pluginId ?? 'test')!;
     return instance;
@@ -126,11 +126,11 @@ export class ServiceFactoryTester<
   async getService<
     TGetService,
     TGetScope extends 'root' | 'plugin',
-    TGetSingleton extends boolean,
+    TGetSingleton extends 'single' | 'multiple',
   >(
     service: ServiceRef<TGetService, TGetScope, TGetSingleton>,
     ...args: 'root' extends TGetScope ? [] : [pluginId?: string]
-  ): Promise<TGetSingleton extends true ? TGetService : TGetService[]> {
+  ): Promise<TGetSingleton extends 'single' ? TGetService : TGetService[]> {
     const [pluginId] = args;
     const instance = await this.#registry.get(service, pluginId ?? 'test');
     if (instance === undefined) {
