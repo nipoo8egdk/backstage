@@ -20,11 +20,6 @@ metadata:
 spec:
   owner: Backstage
   type: service
-  parameters:
-    - title: Business Unit Name
-      name: bu_name
-      type: string
-      default: CTO
   steps:
     - id: fetch-content
       name: Fetch Content
