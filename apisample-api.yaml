@@ -30,7 +30,7 @@ spec:
       name: Fetch Content
       action: fetch:plain
       input:
-        url: https://raw.githubusercontent.com/nipoo8egdk/backstage/master/packages/catalog-model/examples/apis/sample-api.yaml
+        url: https://raw.githubusercontent.com/nipoo8egdk/backstage/master/sample-api.yaml
         targetPath: ./sample-api.yaml
 
     - id: pr-selfservice
