@@ -3,9 +3,44 @@ kind: API
 metadata:
   name: sample-api
   description: Search API for the wayback machine
+  owner: Backstage
 spec:
   type: openapi
   lifecycle: production
-  owner: Backstage
   definition:
     $text: https://github.com/APIs-guru/openapi-directory/blob/main/APIs/archive.org/search/1.0.0/openapi.yaml
+---
+apiVersion: scaffolder.backstage.io/v1alpha1
+kind: Template
+metadata:
+  name: pr-to-github-repo
+  title: PR to GitHub Repo
+  description: Creates a pull request to add a sample API to an existing GitHub repo
+  owner: Backstage
+spec:
+  owner: Backstage
+  type: service
+  parameters:
+    - title: Business Unit Name
+      name: bu_name
+      type: string
+      default: CTO
+  steps:
+    - id: fetch-content
+      name: Fetch Content
+      action: fetch:plain
+      input:
+        url: https://raw.githubusercontent.com/APIs-guru/openapi-directory/main/APIs/archive.org/search/1.0.0/openapi.yaml
+        targetPath: ./sample-api.yaml
+
+    - id: pr-selfservice
+      name: PR to self-service repo
+      action: publish:github:pull-request
+      input:
+        description: "Add sample API YAML to CTO-config-repo"
+        repoUrl: github.com?repo=nipoo8egdk/EG_SAMPLE&owner=nipoo8egdk
+        branchName: release
+        commitMessage: "Add sample API YAML to CTO-config-repo"
+        title: "Add sample API YAML to CTO-config-repo"
+        sourcePath: ./sample-api.yaml
+        targetPath: .
