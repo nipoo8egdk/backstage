@@ -3,7 +3,7 @@ kind: API
 metadata:
   name: sample-api
   description: Search API for the wayback machine
-  owner: Backstage
+  owner: nipoo
 spec:
   type: openapi
   lifecycle: production
