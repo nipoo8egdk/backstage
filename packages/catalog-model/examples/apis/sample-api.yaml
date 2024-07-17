@@ -42,5 +42,5 @@ spec:
         branchName: release
         commitMessage: "Add sample API YAML to CTO-config-repo"
         title: "Add sample API YAML to CTO-config-repo"
-        sourcePath: https://github.com/nipoo8egdk/backstage/blob/master/packages/catalog-model/examples/apis/sample-api.yaml
-        targetPath: .
+        sourcePath: ./packages/catalog-model/examples/apis/sample-api.yaml
+        targetPath: ./
